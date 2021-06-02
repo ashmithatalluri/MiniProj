@@ -1,0 +1,80 @@
+// motor one
+int enA = 6;
+int in1 = 5;
+int in2 = 4;
+// motor two
+int enB = 5;
+int in3 = 1;
+int in4 = 0;
+int a;
+int JoystickLeft_var=100;
+void setup()
+{
+  Serial.begin(9600);
+  // set all the motor control pins to outputs
+  pinMode(enA, OUTPUT);
+  pinMode(enB, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+}
+
+void motion_front(int JoystickLeft_var)
+{
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);  
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW); 
+  analogWrite(enA, 100); 
+  analogWrite(enB, 100); 
+  Serial.print("front motion=");
+  Serial.println(JoystickLeft_var);
+  delay(2000); 
+
+}
+
+void motion_back(int JoystickLeft_var)
+{
+  Serial.print("back motion=");
+  Serial.print(JoystickLeft_var);
+  Serial.print(" ---- ");
+  a=abs(JoystickLeft_var);
+  Serial.println(JoystickLeft_var);
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);  
+  analogWrite(enA, a); 
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW); 
+  analogWrite(enB, a); 
+  delay(20); 
+
+}
+void motion_stop()
+{
+    // now turn off motors
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);  
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, LOW);  
+
+}
+void loop()
+{
+
+  if(JoystickLeft_var>3)
+  {
+    motion_front(JoystickLeft_var);
+
+  } 
+  else if(JoystickLeft_var<-3)
+  {
+    motion_back(JoystickLeft_var);
+
+  }
+  else 
+  {
+    motion_stop();
+  } 
+  
+}
